@@ -1,7 +1,35 @@
 import { useState } from "react";
 
-function Statistic({ title, stat }) {
-  return (<h4>{title}: {stat.toFixed(2)}</h4>);
+function StatisticLine({ title, stat }) {
+  return (
+    <tr>
+      <td>{title}</td>
+      <td>{stat}</td>
+    </tr>
+  );
+}
+
+function Statistics({ good, neutral, bad, total }) {
+  
+  const average = total / 3;
+  const positive = (good / total) * 100;
+  const negative = (bad / total) * 100;
+
+
+  return(
+    <table> 
+      <tr>
+        <th>title</th>
+        <th>stat</th>
+      </tr>
+      <StatisticLine title={"Good"} stat={good} />
+      <StatisticLine title={"Neutral"} stat={neutral} />
+      <StatisticLine title={"Bad"} stat={bad} />
+      <StatisticLine title={"Average"} stat={average} />
+      <StatisticLine title={"Positive"} stat={positive} />
+      <StatisticLine title={"Negative"} stat={negative} />
+    </table>
+  );
 }
 
 function App() {
@@ -10,20 +38,8 @@ function App() {
   const [bad, setBad] = useState(0);
 
   const total = good + neutral + bad;
-  const average = total / 3;
-  const positive = (good / total) * 100;
-  const negative = (bad / total) * 100;
 
-  const statisticsElements = (<>
-        <h3>Good: {good}</h3>
-      <h3>Neutral: {neutral}</h3>
-      <h3>Bad: {bad}</h3>
-      <Statistic title={"Average"} stat={average} />
-      <Statistic title={"Positive"} stat={positive} />
-      <Statistic title={"Negative"} stat={negative} />
-  </>);
-
-  const statistics = total > 0 ? statisticsElements : <h3>No Feedback given</h3>
+  const statistics = total > 0 ? <Statistics good={good} neutral={neutral} bad={bad} total={total} /> : <h3>No Feedback given</h3>
 
   return (
     <div className="App">
